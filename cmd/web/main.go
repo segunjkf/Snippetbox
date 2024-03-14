@@ -12,8 +12,8 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/segunjkf/lets-go/pkg/models/mysql"
 	"github.com/golangcollege/sessions"
+	"github.com/segunjkf/lets-go/pkg/models/mysql"
 )
 
 // Define an application struct to hold the application-wide dependencies for the
@@ -22,10 +22,10 @@ import (
 type application struct {
 	errorLog      *log.Logger
 	infoLog       *log.Logger
-	session 	  *sessions.Session
+	session       *sessions.Session
 	snippets      *mysql.SnippetModel
 	TemplateCache map[string]*template.Template
-	Users		  *mysql.UserModel
+	Users         *mysql.UserModel
 }
 
 func main() {
@@ -52,35 +52,34 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
-	// Use the sessions.New() function to initialize a new session manager, 
-	// passing in the secret key as the parameter. Then we configure it so 
+	// Use the sessions.New() function to initialize a new session manager,
+	// passing in the secret key as the parameter. Then we configure it so
 	// sessions always expires after 12 hours.
 	session := sessions.New([]byte(*secret))
 	session.Lifetime = 12 * time.Hour
 
-
 	app := &application{
 		errorLog:      errorLog,
 		infoLog:       infoLog,
-		session: 	   session,
+		session:       session,
 		snippets:      &mysql.SnippetModel{DB: db},
 		TemplateCache: templateCache,
-		Users: 			&mysql.UserModel{DB: db},
+		Users:         &mysql.UserModel{DB: db},
 	}
 
 	tlsConfig := &tls.Config{
 		PreferServerCipherSuites: true,
-		CurvePreferences: []tls.CurveID{tls.X25519, tls.CurveP256},
+		CurvePreferences:         []tls.CurveID{tls.X25519, tls.CurveP256},
 	}
 
 	srv := &http.Server{
-		Addr:     *addr,
-		ErrorLog: errorLog,
-		Handler:  app.routes(),
+		Addr:      *addr,
+		ErrorLog:  errorLog,
+		Handler:   app.routes(),
 		TLSConfig: tlsConfig,
 
-		IdleTimeout: time.Minute,
-		ReadTimeout: 5 * time.Second,
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
 
