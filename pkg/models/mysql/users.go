@@ -3,7 +3,6 @@ package mysql
 import (
 	"database/sql"
 	"errors"
-	"log"
 	"strings"
 
 	"github.com/go-sql-driver/mysql"
@@ -19,11 +18,12 @@ type UserModel struct {
 // We'll use the Insert method to add a new record to the users table.
 func (m *UserModel) Insert(name, email, password string) error { 
 	HashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
-	if HashedPassword != nil {
+	if err != nil {
 		return err
 	}
 
-	stmt := `INSERT INTO users (name, email, hashed_password, created) VALUES(?, ?, ?, UTC_TIMESTAMP()`
+	stmt := `INSERT INTO users (name, email, hashed_password, created) 
+	VALUES(?, ?, ?, UTC_TIMESTAMP())`
 
 	// Use The Exec() method to inert the user details and hased password 
 	//into the users table
@@ -38,8 +38,6 @@ func (m *UserModel) Insert(name, email, password string) error {
 		}
 		return err
 	}
-
-	log.Println("Data insterted")
 
 	return nil
 }

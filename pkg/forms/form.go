@@ -71,7 +71,7 @@ func (f *Form) MinLength(field string, d int) {
 
 
 func(f *Form) MatchesPattern(field string, pattern *regexp.Regexp) {
-	value :=f.Get(field)
+	value := f.Get(field)
 	if value == "" {
 		return
 	}
