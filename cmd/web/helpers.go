@@ -45,7 +45,7 @@ func (app *application) addDefualtData(td *templateData, r *http.Request) *templ
 func (app *application) render(w http.ResponseWriter, r *http.Request, name string, td *templateData) {
 	ts, ok := app.TemplateCache[name]
 	if !ok {
-		app.serverError(w, fmt.Errorf("The Template %s does not exist", name))
+		app.serverError(w, fmt.Errorf("the template %s does not exist", name))
 		return
 	}
 
