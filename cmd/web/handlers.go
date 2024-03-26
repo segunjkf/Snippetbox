@@ -149,7 +149,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	id, err := app.Users.Authenticate(form.Get("email"), form.Get("password"))
 	if err != nil {
 		if errors.Is(err, models.ErrInvalidCredentials) {
-			form.Errors.Add("generic", "Email or password is incorrect")
+			form.Errors.Add("generic", "Email or password is incorrect or User")
 			app.render(w, r, "login.page.tmpl", &templateData{Form: form})
 		} else {
 			app.serverError(w, err)
